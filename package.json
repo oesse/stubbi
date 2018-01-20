@@ -6,7 +6,9 @@
   "scripts": {
     "prepare": "babel -d lib src",
     "start": "node lib/index.js",
-    "start:dev": "babel-node src/index.js"
+    "start:dev": "babel-node src/index.js",
+    "lint": "eslint",
+    "lint:all": "eslint src test"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
