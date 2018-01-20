@@ -1,4 +1,4 @@
-import 'regenerator-runtime/runtime'
-import service from './service'
+import 'regenerator-runtime/runtime';
+import service from './service';
 
-service().start()
+service().start();

@@ -1,3 +1,3 @@
 export default () => ({
-  start() { console.log('Service started') }
-})
+  start() { console.log('Service started'); },
+});
