@@ -8,7 +8,8 @@
     "start": "node lib/index.js",
     "start:dev": "babel-node src/index.js",
     "lint": "eslint",
-    "lint:all": "eslint src test"
+    "lint:all": "eslint src test",
+    "test": "mocha"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
