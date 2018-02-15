@@ -1,4 +1,9 @@
 import 'regenerator-runtime/runtime';
-import service from './service';
+import server from './server';
 
-service().start();
+const port = process.env.STUBBI_PORT || 3333;
+
+const app = server();
+app.listen(port);
+// eslint-disable-next-line no-console
+console.log(`Stubbi listening on port ${port} ...`);
