@@ -1,26 +1,21 @@
 import Router from 'express-promise-router';
+import stubRepository from './stub-repository';
 
 
 export default (uriControlPrefix) => {
   const router = Router();
 
-  let lastId = 0;
-  const stubsById = {};
-  const stubsByPath = {};
+  const stubs = stubRepository();
+
 
   const createNewStub = (req, res) => {
     const {
       method, path, body, status,
     } = req.body;
 
-    lastId += 1;
-    const id = lastId;
-    const newStub = {
-      id, method, path, body, status, callCount: 0,
-    };
-
-    stubsById[id] = newStub;
-    stubsByPath[path] = newStub;
+    const newStub = stubs.createStub({
+      method, path, body, status,
+    });
 
     res.status(201);
     res.json(newStub);
@@ -29,16 +24,15 @@ export default (uriControlPrefix) => {
   const deleteStubById = (req, res) => {
     const { id } = req.params;
 
-    const { path } = stubsById[id];
-    delete stubsById[id];
-    delete stubsByPath[path];
+    stubs.deleteStub(id);
 
     res.sendStatus(204);
   };
 
   const getStubById = (req, res) => {
     const { id } = req.params;
-    const stub = stubsById[id];
+    const stub = stubs.getStubById(id);
+
     if (!stub) {
       res.sendStatus(404);
       return;
@@ -53,7 +47,7 @@ export default (uriControlPrefix) => {
 
   router.use('*', (req, res) => {
     const path = req.params[0];
-    const stub = stubsByPath[path];
+    const stub = stubs.getStubByPath(path);
 
     if (!stub) {
       res.sendStatus(404);
