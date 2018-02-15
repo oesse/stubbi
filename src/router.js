@@ -16,7 +16,7 @@ const createNewStub = (req, res) => {
   lastId += 1;
   const id = lastId;
   const newStub = {
-    id, method, path, body, status,
+    id, method, path, body, status, callCount: 0,
   };
 
   stubsById[id] = newStub;
@@ -36,8 +36,20 @@ const deleteStubById = (req, res) => {
   res.sendStatus(204);
 };
 
+const getStubById = (req, res) => {
+  const { id } = req.params;
+  const stub = stubsById[id];
+  if (!stub) {
+    res.sendStatus(404);
+    return;
+  }
+
+  res.json(stub);
+};
+
 router.post(uriControlPrefix, createNewStub);
 router.delete(`${uriControlPrefix}/:id`, deleteStubById);
+router.get(`${uriControlPrefix}/:id`, getStubById);
 
 router.use('*', (req, res) => {
   const path = req.params[0];
@@ -53,6 +65,7 @@ router.use('*', (req, res) => {
     return;
   }
 
+  stub.callCount += 1;
   res
     .status(stub.status || 200)
     .json(stub.body);
