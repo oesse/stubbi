@@ -4,14 +4,17 @@ const uriControlPrefix = process.env.STUBBI_CTRL_PREFIX || '/stubs';
 
 const router = Router();
 
+let lastId = 0;
 const stubsById = {};
 const stubsByPath = {};
 
-router.use(uriControlPrefix, (req, res) => {
+router.post(uriControlPrefix, (req, res) => {
   const {
     method, path, body, status,
   } = req.body;
-  const id = Object.keys(stubsById).length;
+
+  lastId += 1;
+  const id = lastId;
   const newStub = {
     id, method, path, body, status,
   };
@@ -21,6 +24,16 @@ router.use(uriControlPrefix, (req, res) => {
 
   res.status(201);
   res.json(newStub);
+});
+
+router.delete(`${uriControlPrefix}/:id`, (req, res) => {
+  const { id } = req.params;
+
+  const { path } = stubsById[id];
+  delete stubsById[id];
+  delete stubsByPath[path];
+
+  res.sendStatus(204);
 });
 
 router.use('*', (req, res) => {

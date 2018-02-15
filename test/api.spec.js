@@ -26,4 +26,29 @@ describe('stubbi API', () => {
       expect(stubbedResponse.body).to.equal('Hello');
     });
   });
+
+  describe('remove stub', () => {
+    let stubId;
+
+    beforeEach('add a stub', async () => {
+      const { body: stub } = await addStub({
+        method: 'get',
+        path: '/say-hello',
+        body: 'Hello',
+        status: 418,
+      }).expect(201);
+
+      stubId = stub.id;
+    });
+
+    it('removes stub route by its id', async () => {
+      await request(app)
+        .delete(`/stubs/${stubId}`)
+        .expect(204);
+
+      await request(app)
+        .get('/say-hello')
+        .expect(404);
+    });
+  });
 });
