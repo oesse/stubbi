@@ -7,5 +7,5 @@ RUN yarn install --production
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 3333
 CMD ["node", "lib/index.js"]
