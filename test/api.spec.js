@@ -99,4 +99,39 @@ describe('stubbi API', () => {
       expect(stubAfterCall).to.have.property('calls').which.is.an('array');
     });
   });
+
+  describe('reset stubs', () => {
+    beforeEach('add a stub', async () => {
+      await addStub({
+        method: 'get',
+        path: '/say-hello',
+        respondsWith: {
+          body: 'Hello',
+          status: 418,
+        },
+      }).expect(201);
+
+      await addStub({
+        method: 'post',
+        path: '/do-crazy-things',
+        respondsWith: {
+          status: 201,
+        },
+      }).expect(201);
+    });
+
+    it('removes all stubs', async () => {
+      await request(app)
+        .delete('/stubs')
+        .expect(204);
+
+      await request(app)
+        .get('/say-hello')
+        .expect(404);
+
+      await request(app)
+        .post('/do-crazy-things')
+        .expect(404);
+    });
+  });
 });

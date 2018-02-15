@@ -3,8 +3,8 @@ import sinon from 'sinon';
 
 export default () => {
   let lastId = 0;
-  const stubsById = {};
-  const stubsByPath = {};
+  let stubsById = {};
+  let stubsByPath = {};
 
   return {
     createStub({
@@ -28,6 +28,10 @@ export default () => {
       const { path } = stubsById[id];
       delete stubsById[id];
       delete stubsByPath[path];
+    },
+    deleteAllStubs() {
+      stubsById = {};
+      stubsByPath = {};
     },
     getStubById(id) {
       return stubsById[id];

@@ -31,6 +31,11 @@ export default (uriControlPrefix) => {
     res.sendStatus(204);
   };
 
+  const deleteAllStubs = (req, res) => {
+    stubs.deleteAllStubs();
+    res.sendStatus(204);
+  };
+
   const getStubById = (req, res) => {
     const { id } = req.params;
     const stub = stubs.getStubById(id);
@@ -51,6 +56,7 @@ export default (uriControlPrefix) => {
 
   router.post(uriControlPrefix, createNewStub);
   router.delete(`${uriControlPrefix}/:id`, deleteStubById);
+  router.delete(uriControlPrefix, deleteAllStubs);
   router.get(`${uriControlPrefix}/:id`, getStubById);
 
   router.use('*', (req, res) => {
