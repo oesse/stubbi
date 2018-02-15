@@ -21,11 +21,13 @@ describe('stubbi API', () => {
       const { body: stub } = await addStub({
         method: 'get',
         path: '/say-hello',
-        body: 'Hello',
-        status: 418,
+        respondsWith: {
+          body: 'Hello',
+          status: 418,
+        },
       }).expect(201);
 
-      expect(stub).to.have.keys('id', 'callCount', 'method', 'path', 'body', 'status');
+      expect(stub).to.have.property('id');
 
       const stubbedResponse = await request(app)
         .get('/say-hello')
@@ -41,8 +43,10 @@ describe('stubbi API', () => {
       const { body: stub } = await addStub({
         method: 'get',
         path: '/say-hello',
-        body: 'Hello',
-        status: 418,
+        respondsWith: {
+          body: 'Hello',
+          status: 418,
+        },
       }).expect(201);
 
       stubId = stub.id;
@@ -66,8 +70,10 @@ describe('stubbi API', () => {
       const { body: stub } = await addStub({
         method: 'get',
         path: '/say-hello',
-        body: 'Hello',
-        status: 418,
+        respondsWith: {
+          body: 'Hello',
+          status: 418,
+        },
       }).expect(201);
 
       stubId = stub.id;
@@ -84,11 +90,13 @@ describe('stubbi API', () => {
         .get('/say-hello')
         .expect(418);
 
+
       const { body: stubAfterCall } = await request(app)
         .get(`/stubs/${stubId}`)
         .expect(200);
 
       expect(stubAfterCall).to.have.property('callCount', 1);
+      expect(stubAfterCall).to.have.property('calls').which.is.an('array');
     });
   });
 });

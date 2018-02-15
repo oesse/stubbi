@@ -1,3 +1,6 @@
+import sinon from 'sinon';
+
+
 export default () => {
   let lastId = 0;
   const stubsById = {};
@@ -5,13 +8,15 @@ export default () => {
 
   return {
     createStub({
-      method, path, body, status,
+      method, path, respondsWith,
     }) {
+      const { headers, status, body } = respondsWith;
+
       lastId += 1;
       const id = lastId;
 
       const newStub = {
-        id, method, path, body, status, callCount: 0,
+        id, method, path, respondsWith, call: sinon.stub().returns({ headers, status, body }),
       };
 
       stubsById[id] = newStub;

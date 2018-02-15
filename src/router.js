@@ -10,15 +10,17 @@ export default (uriControlPrefix) => {
 
   const createNewStub = (req, res) => {
     const {
-      method, path, body, status,
+      method, path, respondsWith,
     } = req.body;
 
-    const newStub = stubs.createStub({
-      method, path, body, status,
+    const { id } = stubs.createStub({
+      method, path, respondsWith,
     });
 
     res.status(201);
-    res.json(newStub);
+    res.json({
+      id, method, path, respondsWith,
+    });
   };
 
   const deleteStubById = (req, res) => {
@@ -38,7 +40,13 @@ export default (uriControlPrefix) => {
       return;
     }
 
-    res.json(stub);
+    const {
+      method, path, respondsWith, call: callStub,
+    } = stub;
+    const calls = callStub.getCalls().map(call => call.args);
+    res.json({
+      id, method, path, respondsWith, callCount: callStub.callCount, calls,
+    });
   };
 
   router.post(uriControlPrefix, createNewStub);
@@ -53,11 +61,14 @@ export default (uriControlPrefix) => {
       res.sendStatus(404);
       return;
     }
+    const { headers, query, body } = req;
 
-    stub.callCount += 1;
+    const response = stub.call({ headers, query, body });
+
+    Object.keys(response.headers || {}).forEach(key => res.set(key, response.headers[key]));
     res
-      .status(stub.status || 200)
-      .json(stub.body);
+      .status(response.status || 200)
+      .json(response.body);
   });
 
   return router;
