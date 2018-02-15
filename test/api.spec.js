@@ -1,14 +1,21 @@
 import { expect } from 'chai';
 import request from 'supertest';
 
-import app from '../src/server';
+import server from '../src/server';
 
-const addStub = stubSpec =>
-  request(app)
-    .post('/stubs')
-    .send(stubSpec);
 
 describe('stubbi API', () => {
+  let app;
+
+  beforeEach('create app instance', () => {
+    app = server();
+  });
+
+  const addStub = stubSpec =>
+    request(app)
+      .post('/stubs')
+      .send(stubSpec);
+
   describe('add stub', () => {
     it('adds stub route which returns the given response', async () => {
       const { body: stub } = await addStub({
