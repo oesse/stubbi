@@ -47,14 +47,9 @@ export default (uriControlPrefix) => {
 
   router.use('*', (req, res) => {
     const path = req.params[0];
-    const stub = stubs.getStubByPath(path);
+    const stub = stubs.findStub(path, req.method);
 
     if (!stub) {
-      res.sendStatus(404);
-      return;
-    }
-
-    if (req.method.toLowerCase() !== stub.method.toLowerCase()) {
       res.sendStatus(404);
       return;
     }

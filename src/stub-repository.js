@@ -27,8 +27,15 @@ export default () => {
     getStubById(id) {
       return stubsById[id];
     },
-    getStubByPath(path) {
-      return stubsByPath[path];
+    findStub(path, method) {
+      const stub = stubsByPath[path];
+
+      if (!stub) { return undefined; }
+      if (method.toLowerCase() !== stub.method.toLowerCase()) {
+        return undefined;
+      }
+
+      return stub;
     },
   };
 };
