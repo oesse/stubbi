@@ -1,4 +1,5 @@
 # stubbi - http server to stub http requests
+[![Build Status](https://travis-ci.org/oesse/stubbi.svg?branch=master)](https://travis-ci.org/oesse/stubbi)
 
 ## Features
 
