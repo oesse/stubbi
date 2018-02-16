@@ -1,4 +1,5 @@
 import Router from 'express-promise-router';
+import request from 'request-promise';
 import stubRepository from './stub-repository';
 
 
@@ -10,16 +11,16 @@ export default (uriControlPrefix) => {
 
   const createNewStub = (req, res) => {
     const {
-      method, path, respondsWith,
+      method, path, respondsWith, notifies,
     } = req.body;
 
     const { id } = stubs.createStub({
-      method, path, respondsWith,
+      method, path, respondsWith, notifies,
     });
 
     res.status(201);
     res.json({
-      id, method, path, respondsWith,
+      id, method, path, respondsWith, notifies,
     });
   };
 
@@ -46,11 +47,12 @@ export default (uriControlPrefix) => {
     }
 
     const {
-      method, path, respondsWith, call: callStub,
+      method, path, respondsWith, notifies, call: callStub,
     } = stub;
+
     const calls = callStub.getCalls().map(call => call.args);
     res.json({
-      id, method, path, respondsWith, callCount: callStub.callCount, calls,
+      id, method, path, respondsWith, notifies, callCount: callStub.callCount, calls,
     });
   };
 
@@ -59,7 +61,16 @@ export default (uriControlPrefix) => {
   router.delete(uriControlPrefix, deleteAllStubs);
   router.get(`${uriControlPrefix}/:id`, getStubById);
 
-  router.use('*', (req, res) => {
+
+  const notify = async ({ path, method, body }) => {
+    await request({
+      uri: path,
+      method,
+      body,
+    });
+  };
+
+  router.use('*', async (req, res) => {
     const path = req.params[0];
     const stub = stubs.findStub(path, req.method);
 
@@ -70,6 +81,10 @@ export default (uriControlPrefix) => {
     const { headers, query, body } = req;
 
     const response = stub.call({ headers, query, body });
+
+    if (stub.notifies) {
+      await notify(stub.notifies);
+    }
 
     Object.keys(response.headers || {}).forEach(key => res.set(key, response.headers[key]));
     res

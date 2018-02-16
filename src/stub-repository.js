@@ -8,7 +8,7 @@ export default () => {
 
   return {
     createStub({
-      method, path, respondsWith,
+      method, path, respondsWith, notifies,
     }) {
       const { headers, status, body } = respondsWith;
 
@@ -16,7 +16,12 @@ export default () => {
       const id = lastId;
 
       const newStub = {
-        id, method, path, respondsWith, call: sinon.stub().returns({ headers, status, body }),
+        id,
+        method,
+        path,
+        respondsWith,
+        notifies,
+        call: sinon.stub().returns({ headers, status, body }),
       };
 
       stubsById[id] = newStub;
