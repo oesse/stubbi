@@ -6,6 +6,8 @@ import deleteStubsById from './endpoints/delete-stubs-by-id';
 import getStubsById from './endpoints/get-stubs-by-id';
 import callStub from './endpoints/call-stub';
 
+import handleErrors from './handle-errors';
+
 import stubRepository from './stub-repository';
 
 
@@ -24,6 +26,8 @@ export default (uriControlPrefix) => {
   router.get(`${uriControlPrefix}/:id`, getStubsById);
 
   router.use('*', callStub);
+
+  router.use(handleErrors);
 
   return router;
 };
