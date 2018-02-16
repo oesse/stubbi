@@ -6,7 +6,7 @@ import request from 'supertest';
 import server from '../src/server';
 
 
-describe.only('stub with webhooks', () => {
+describe('stub with webhooks', () => {
   let app;
   let notificationServer;
   let notificationUri;
@@ -58,7 +58,10 @@ describe.only('stub with webhooks', () => {
         notifies: {
           path: `${notificationUri}/notification`,
           method: 'post',
-          body: 'notify was called',
+          body: { text: 'notify was called' },
+          headers: {
+            authorization: 'Bearer secret_token',
+          },
         },
       })
       .expect(201);
@@ -73,5 +76,9 @@ describe.only('stub with webhooks', () => {
       .expect(200);
 
     expect(notificationStub).to.have.property('callCount', 1);
+    const event = notificationStub.calls[0];
+    expect(event).to.have.property('body').which.deep.equals({ text: 'notify was called' });
+    expect(event).to.have.property('headers')
+      .which.has.property('authorization', 'Bearer secret_token');
   });
 });

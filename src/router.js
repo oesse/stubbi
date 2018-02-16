@@ -50,7 +50,7 @@ export default (uriControlPrefix) => {
       method, path, respondsWith, notifies, call: callStub,
     } = stub;
 
-    const calls = callStub.getCalls().map(call => call.args);
+    const calls = callStub.getCalls().map(call => call.args[0]);
     res.json({
       id, method, path, respondsWith, notifies, callCount: callStub.callCount, calls,
     });
@@ -62,11 +62,12 @@ export default (uriControlPrefix) => {
   router.get(`${uriControlPrefix}/:id`, getStubById);
 
 
-  const notify = async ({ path, method, body }) => {
+  const notify = async (notifyOptions) => {
+    const { path, ...rest } = notifyOptions;
     await request({
       uri: path,
-      method,
-      body,
+      ...rest,
+      json: true,
     });
   };
 
@@ -79,7 +80,6 @@ export default (uriControlPrefix) => {
       return;
     }
     const { headers, query, body } = req;
-
     const response = stub.call({ headers, query, body });
 
     if (stub.notifies) {
