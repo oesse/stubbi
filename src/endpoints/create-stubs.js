@@ -1,4 +1,4 @@
-import validateSchema from './validate-schema';
+import validateSchema from '../middlewares/validate-schema';
 
 export default [
   validateSchema({

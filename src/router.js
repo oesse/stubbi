@@ -1,12 +1,12 @@
 import Router from 'express-promise-router';
 
+import handleErrors from './middlewares/handle-errors';
+
 import createStubs from './endpoints/create-stubs';
 import deleteStubs from './endpoints/delete-stubs';
 import deleteStubsById from './endpoints/delete-stubs-by-id';
 import getStubsById from './endpoints/get-stubs-by-id';
 import callStub from './endpoints/call-stub';
-
-import handleErrors from './handle-errors';
 
 import stubRepository from './stub-repository';
 
