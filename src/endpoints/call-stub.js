@@ -9,6 +9,9 @@ const notify = async (notifyOptions) => {
   });
 };
 
+const setHeaders = (res, headers) =>
+  Object.keys(headers || {}).forEach(key => res.set(key, headers[key]));
+
 export default async (req, res) => {
   const path = req.params[0];
   const stub = req.stubs.findStub(path, req.method);
@@ -24,7 +27,7 @@ export default async (req, res) => {
     await notify(stub.notifies);
   }
 
-  Object.keys(response.headers || {}).forEach(key => res.set(key, response.headers[key]));
+  setHeaders(res, response.headers);
   res
     .status(response.status || 200)
     .json(response.body);
