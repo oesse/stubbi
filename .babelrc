@@ -1,9 +1,6 @@
 {
-  "presets": ["env", "stage-1"],
   "plugins": [
-    ["transform-async-to-module-method", {
-      "module": "bluebird",
-      "method": "coroutine"
-    }]
+    "transform-es2015-modules-commonjs",
+    "transform-object-rest-spread"
   ]
 }
