@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import { NoSuchStub } from './errors'
+import { NoSuchStub } from './errors';
 
 
 export default () => {
