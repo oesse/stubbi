@@ -3,7 +3,7 @@ import { fromCallback } from 'bluebird';
 import http from 'http';
 import request from 'supertest';
 
-import server from '../src/server';
+import server from '../src';
 
 
 describe('stub with webhooks', () => {

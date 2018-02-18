@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import request from 'supertest';
 
-import server from '../src/server';
+import server from '../src';
 
 
 describe('stubbi API', () => {

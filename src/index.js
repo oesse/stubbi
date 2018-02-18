@@ -1,9 +1,20 @@
-import server from './server';
+import express from 'express';
+import bodyParser from 'body-parser';
 
-const port = process.env.STUBBI_PORT || 3333;
-const uriControlPrefix = process.env.STUBBI_CTRL_PREFIX;
+import router from './router';
 
-const app = server({ uriControlPrefix });
-app.listen(port);
-// eslint-disable-next-line no-console
-console.log(`Stubbi listening on port ${port} ...`);
+const defaultOptions = {
+  uriControlPrefix: '/stubs',
+};
+
+export default (options) => {
+  const realOptions = { ...defaultOptions, options };
+
+  const app = express();
+
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(router(realOptions.uriControlPrefix));
+
+  return app;
+};

@@ -8,4 +8,4 @@ RUN yarn install --production
 COPY . .
 
 EXPOSE 3333
-CMD ["node", "lib/index.js"]
+CMD ["node", "lib/entry-point.js"]

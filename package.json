@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "prepare": "babel -d lib src",
-    "start": "node lib/index.js",
-    "start:dev": "babel-node src/index.js",
+    "start": "node lib/entry-point.js",
+    "start:dev": "babel-node src/entry-point.js",
     "lint": "eslint",
     "lint:all": "eslint src test",
     "test": "mocha"
