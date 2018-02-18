@@ -1,4 +1,4 @@
-import { SchemaValidationFailed } from '../errors';
+import { NoSuchStub, SchemaValidationFailed } from '../errors';
 
 // Expressjs needs `next` as fourth parameter to identify this middleware as
 // an error handling middleware.
@@ -6,6 +6,10 @@ import { SchemaValidationFailed } from '../errors';
 export default (err, req, res, next) => {
   if (err instanceof SchemaValidationFailed) {
     res.status(400).json({ errors: err.errors });
+    return;
+  }
+  if (err instanceof NoSuchStub) {
+    res.sendStatus(404);
     return;
   }
   // eslint-disable-next-line no-console

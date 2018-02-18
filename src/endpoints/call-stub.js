@@ -16,10 +16,6 @@ export default async (req, res) => {
   const path = req.params[0];
   const stub = req.stubs.findStub(path, req.method);
 
-  if (!stub) {
-    res.sendStatus(404);
-    return;
-  }
   const { headers, query, body } = req;
   const response = stub.call({ headers, query, body });
 

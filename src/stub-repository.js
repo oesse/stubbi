@@ -1,4 +1,5 @@
 import sinon from 'sinon';
+import { NoSuchStub } from './errors'
 
 
 export default () => {
@@ -39,14 +40,16 @@ export default () => {
       stubsByPath = {};
     },
     getStubById(id) {
-      return stubsById[id];
+      const stub = stubsById[id];
+      if (!stub) { throw new NoSuchStub(); }
+      return stub;
     },
     findStub(path, method) {
       const stub = stubsByPath[path];
 
-      if (!stub) { return undefined; }
+      if (!stub) { throw new NoSuchStub(); }
       if (method.toLowerCase() !== stub.method.toLowerCase()) {
-        return undefined;
+        throw new NoSuchStub();
       }
 
       return stub;
