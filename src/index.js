@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime';
 import server from './server';
 
 const port = process.env.STUBBI_PORT || 3333;
