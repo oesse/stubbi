@@ -11,7 +11,7 @@ export default () => {
     createStub({
       method, path, respondsWith, notifies,
     }) {
-      const { headers, status, body } = respondsWith;
+      const { headers, status, body } = respondsWith || {};
 
       lastId += 1;
       const id = lastId;
