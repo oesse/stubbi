@@ -56,7 +56,7 @@ describe('stub with webhooks', () => {
           status: 204,
         },
         notifies: {
-          path: `${notificationUri}/notification`,
+          uri: `${notificationUri}/notification`,
           method: 'post',
           body: { text: 'notify was called' },
           headers: {

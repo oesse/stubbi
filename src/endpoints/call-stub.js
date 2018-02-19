@@ -1,11 +1,9 @@
 import request from 'request-promise';
 
 const notify = async (notifyOptions) => {
-  const { path, ...rest } = notifyOptions;
   await request({
-    uri: path,
-    ...rest,
     json: true,
+    ...notifyOptions,
   });
 };
 
