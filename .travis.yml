@@ -15,6 +15,6 @@ before_install:
 script:
   - yarn lint:all
   - yarn test
-  - curl -i -X POST http://127.0.0.1:3333/stubs -d path=/api -d method=get
+  - sleep 5; curl -i -X POST http://127.0.0.1:3333/stubs -d path=/api -d method=get
 
 cache: yarn
