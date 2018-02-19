@@ -6,15 +6,13 @@ node_js:
 services:
   - docker
 
-before_install:
-  - docker build -t oesse/stubbi .
-  - docker run -d -p 127.0.0.1:3333:3333 oesse/stubbi
-  - docker ps -a
-
-
 script:
   - yarn lint:all
   - yarn test
-  - sleep 5; curl -i -X POST http://127.0.0.1:3333/stubs -d path=/api -d method=get
+  - |
+    docker build -t oesse/stubbi . && \
+    docker run -d -p 127.0.0.1:3333:3333 oesse/stubbi && \
+    docker ps -a && \
+    curl -i -X POST http://127.0.0.1:3333/stubs -d path=/api -d method=get
 
 cache: yarn
