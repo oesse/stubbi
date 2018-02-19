@@ -1,10 +1,15 @@
 import request from 'request-promise';
+import { NotificationError } from '../errors';
 
 const notify = async (notifyOptions) => {
-  await request({
-    json: true,
-    ...notifyOptions,
-  });
+  try {
+    await request({
+      json: true,
+      ...notifyOptions,
+    });
+  } catch (e) {
+    throw new NotificationError(e);
+  }
 };
 
 const setHeaders = (res, headers) =>

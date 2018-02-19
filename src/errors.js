@@ -13,3 +13,9 @@ export class SchemaValidationFailed extends CustomError {
     this.errors = errors;
   }
 }
+export class NotificationError extends CustomError {
+  constructor(cause) {
+    super(cause.message);
+    this.cause = cause;
+  }
+}
