@@ -13,6 +13,7 @@ script:
     docker build -t oesse/stubbi . && \
     docker run -d -p 127.0.0.1:3333:3333 oesse/stubbi && \
     docker ps -a && \
+    sleep 10 && \
     curl -i -X POST http://127.0.0.1:3333/stubs -d path=/api -d method=get
 
 cache: yarn
